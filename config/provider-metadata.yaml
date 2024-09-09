@@ -1,40 +1,340 @@
-name: hashicorp/null
+name: petoju/mysql
 resources:
-    null_resource:
+    mysql_database:
         subCategory: ""
-        description: The null_resource resource implements the standard resource lifecycle but takes no further action. On Terraform 1.4 and later, use the terraform_data resource type https://developer.hashicorp.com/terraform/language/resources/terraform-data instead. The triggers argument allows specifying an arbitrary set of values that, when changed, will cause the resource to be replaced.
-        name: null_resource
-        title: null_resource Resource - terraform-provider-null
+        description: Creates and manages a database on a MySQL server.
+        name: mysql_database
+        title: mysql_database
         examples:
-            - name: cluster
+            - name: app
               manifest: |-
                 {
-                  "connection": [
-                    {
-                      "host": "${element(aws_instance.cluster[*].public_ip, 0)}"
-                    }
-                  ],
-                  "provisioner": {
-                    "remote-exec": [
-                      {
-                        "inline": [
-                          "bootstrap-cluster.sh ${join(\" \",\n      aws_instance.cluster[*].private_ip)}"
-                        ]
-                      }
-                    ]
-                  },
-                  "triggers": {
-                    "cluster_instance_ids": "${join(\",\", aws_instance.cluster[*].id)}"
-                  }
+                  "name": "my_awesome_app"
                 }
+        argumentDocs:
+            default_character_set: |-
+                - (Optional) The default character set to use when
+                a table is created without specifying an explicit character set. Defaults
+                to utf8mb4.
+            default_collation: |-
+                - (Optional) The default collation to use when a table
+                is created without specifying an explicit collation. Defaults to
+                utf8mb4_general_ci. Each character set has its own set of collations, so
+                changing the character set requires also changing the collation.
+            id: '- The id of the database.'
+            name: |-
+                - (Required) The name of the database. This must be unique within
+                a given MySQL server and may or may not be case-sensitive depending on
+                the operating system on which the MySQL server is running.
+        importStatements: []
+    mysql_default_roles:
+        subCategory: ""
+        description: Creates and manages a user's default roles on a MySQL server.
+        name: mysql_default_roles
+        title: mysql_default_roles
+        examples:
+            - name: jdoe
+              manifest: |-
+                {
+                  "host": "${mysql_user.jdoe.host}",
+                  "roles": "${mysql_grant.jdoe.roles}",
+                  "user": "${mysql_user.jdoe.user}"
+                }
+              references:
+                host: mysql_user.jdoe.host
+                roles: mysql_grant.jdoe.roles
+                user: mysql_user.jdoe.user
               dependencies:
-                aws_instance.cluster: |-
+                mysql_grant.jdoe: |-
                     {
-                      "ami": "ami-0dcc1e21636832c5d",
-                      "count": 3,
-                      "instance_type": "m5.large"
+                      "database": "",
+                      "host": "${mysql_user.jdoe.host}",
+                      "roles": [
+                        "${mysql_role.readonly.name}"
+                      ],
+                      "user": "${mysql_user.jdoe.user}"
+                    }
+                mysql_role.readonly: |-
+                    {
+                      "name": "readonly"
+                    }
+                mysql_user.jdoe: |-
+                    {
+                      "host": "%",
+                      "user": "jdoe"
                     }
         argumentDocs:
-            id: (String) This is set to a random value at create time.
-            triggers: (Map of String) A map of arbitrary strings that, when changed, will force the null resource to be replaced, re-running any associated provisioners.
+            host: '- (Optional) The source host of the user. Defaults to "localhost".'
+            id: '- The id of the user default roles created, composed as "username@host".'
+            roles: '- (Optional) A list of default roles to assign to the user. By default no roles are assigned.'
+            user: '- (Required) The name of the user.'
+        importStatements:
+            - terraform import mysql_default_roles.example user@host
+    mysql_global_variable:
+        subCategory: ""
+        description: Manages a global variables on a MySQL server.
+        name: mysql_global_variable
+        title: mysql_global_variable
+        examples:
+            - name: max_connections
+              manifest: |-
+                {
+                  "name": "max_connections",
+                  "value": "100"
+                }
+        argumentDocs:
+            name: '- (Required) The name of the global variable.'
+            value: '- (Required) The value of the global variable.'
+        importStatements:
+            - $ terraform import mysql_global_variable.max_connections max_connections
+    mysql_grant:
+        subCategory: ""
+        description: Creates and manages privileges given to a user on a MySQL server
+        name: mysql_grant
+        title: mysql_grant
+        examples:
+            - name: jdoe
+              manifest: |-
+                {
+                  "database": "app",
+                  "host": "${mysql_user.jdoe.host}",
+                  "privileges": [
+                    "SELECT",
+                    "UPDATE"
+                  ],
+                  "user": "${mysql_user.jdoe.user}"
+                }
+              references:
+                host: mysql_user.jdoe.host
+                user: mysql_user.jdoe.user
+              dependencies:
+                mysql_user.jdoe: |-
+                    {
+                      "host": "example.com",
+                      "plaintext_password": "password",
+                      "user": "jdoe"
+                    }
+            - name: developer
+              manifest: |-
+                {
+                  "database": "app",
+                  "privileges": [
+                    "SELECT",
+                    "UPDATE"
+                  ],
+                  "role": "${mysql_role.developer.name}"
+                }
+              references:
+                role: mysql_role.developer.name
+              dependencies:
+                mysql_role.developer: |-
+                    {
+                      "name": "developer"
+                    }
+            - name: developer
+              manifest: |-
+                {
+                  "database": "app",
+                  "host": "${mysql_user.jdoe.host}",
+                  "roles": [
+                    "${mysql_role.developer.name}"
+                  ],
+                  "user": "${mysql_user.jdoe.user}"
+                }
+              references:
+                host: mysql_user.jdoe.host
+                user: mysql_user.jdoe.user
+              dependencies:
+                mysql_role.developer: |-
+                    {
+                      "name": "developer"
+                    }
+                mysql_user.jdoe: |-
+                    {
+                      "host": "example.com",
+                      "plaintext_password": "password",
+                      "user": "jdoe"
+                    }
+        argumentDocs:
+            GRANT: documentation
+            database: '- (Required) The database to grant privileges on.'
+            grant: '- (Optional) Whether to also give the user privileges to grant the same privileges to other users.'
+            host: '- (Optional) The source host of the user. Defaults to "localhost". Conflicts with role.'
+            privileges: '- (Optional) A list of privileges to grant to the user. Refer to a list of privileges (such as here) for applicable privileges. Conflicts with roles.'
+            role: '- (Optional) The role to grant privileges to. Conflicts with user and host.'
+            roles: '- (Optional) A list of roles to grant to the user. Conflicts with privileges.'
+            table: '- (Optional) Which table to grant privileges on. Defaults to *, which is all tables.'
+            tls_option: '- (Optional) An TLS-Option for the GRANT statement. The value is suffixed to REQUIRE. A value of ''SSL'' will generate a GRANT ... REQUIRE SSL statement. See the MYSQL  for more. Ignored if MySQL version is under 5.7.0.'
+            user: '- (Optional) The name of the user. Conflicts with role.'
+        importStatements: []
+    mysql_rds_config:
+        subCategory: ""
+        description: Manages RDS mysql config.
+        name: mysql_rds_config
+        title: mysql_rds_config
+        examples:
+            - name: this
+              manifest: |-
+                {
+                  "binlog_retention_hours": 48,
+                  "replication_target_delay": 3200
+                }
+        argumentDocs:
+            binlog_retention_hours: '- (Optional) binlog retention period in hours'
+            replication_target_delay: '- (Optional) replicaation target delay in seconds'
+        importStatements: []
+    mysql_role:
+        subCategory: ""
+        description: Creates and manages a role  on a MySQL server.
+        name: mysql_role
+        title: mysql_role
+        examples:
+            - name: developer
+              manifest: |-
+                {
+                  "name": "developer"
+                }
+        argumentDocs:
+            name: '- (Required) The name of the role.'
+        importStatements: []
+    mysql_ti_config:
+        subCategory: ""
+        description: Manages a TiKV or PD variables on a TiDB cluster.
+        name: mysql_ti_config
+        title: mysql_ti_config
+        examples:
+            - name: log_level
+              manifest: |-
+                {
+                  "name": "log.level",
+                  "type": "pd",
+                  "value": "warn"
+                }
+            - name: log_level
+              manifest: |-
+                {
+                  "name": "log.level",
+                  "type": "pd",
+                  "value": "warn"
+                }
+            - name: log_level
+              manifest: |-
+                {
+                  "instance": "127.0.0.1:2379",
+                  "name": "log.level",
+                  "type": "pd",
+                  "value": "warn"
+                }
+            - name: split_qps_threshold
+              manifest: |-
+                {
+                  "name": "split.qps-threshold",
+                  "type": "tikv",
+                  "value": "100"
+                }
+            - name: split_qps_threshold
+              manifest: |-
+                {
+                  "instance": "127.0.0.1:20180",
+                  "name": "split.qps-threshold",
+                  "type": "tikv",
+                  "value": "10"
+                }
+        argumentDocs:
+            name: '- (Required) The name of the configuration variable.'
+            type: '- (Required) The instance type to configure. Possible values are tikv or pd.'
+            value: '- (Required) The value of the configuration variable as string.'
+        importStatements:
+            - terraform import 'mysql_ti_config.split_qps_threshold' 'tikv#split-qps-threshold'
+            - terraform import 'mysql_ti_config.split_qps_threshold' 'tikv#split-qps-threshold#127.0.0.1:20180'
+            - terraform import 'mysql_ti_config.log_level' 'pd#log.level'
+    mysql_user:
+        subCategory: ""
+        description: Creates and manages a user on a MySQL server.
+        name: mysql_user
+        title: mysql_user
+        examples:
+            - name: jdoe
+              manifest: |-
+                {
+                  "host": "example.com",
+                  "plaintext_password": "password",
+                  "user": "jdoe"
+                }
+            - name: nologin
+              manifest: |-
+                {
+                  "auth_plugin": "mysql_no_login",
+                  "host": "example.com",
+                  "user": "nologin"
+                }
+            - name: nologin
+              manifest: |-
+                {
+                  "auth_plugin": "mysql_native_password",
+                  "auth_string_hashed": "*2470C0C06DEE42FD1618BB99005ADCA2EC9D1E19",
+                  "host": "example.com",
+                  "user": "nologin"
+                }
+            - name: aadupn
+              manifest: |-
+                {
+                  "aad_identity": [
+                    {
+                      "identity": "little.johny@doe.onmicrosoft.com",
+                      "type": "user"
+                    }
+                  ],
+                  "auth_plugin": "aad_auth",
+                  "user": "aliasToUseWhenConnectiong"
+                }
+        argumentDocs:
+            AWSAuthenticationPlugin: |-
+                - Allows the use of IAM authentication with Amazon
+                Aurora. For more details on how to use IAM auth with
+                Aurora, see here.
+            CREATE USER: documentation
+            aad_auth: |-
+                - Uses CREATE AADUSER statement to create user instead of CREATE USER to create user
+                with AzureAD authentication to Azure Database for MySQL.
+                When specified, you need to specify aad_identity. For more information about AzureAD authentication into MySQL
+                see here. You have to use AAD authenticated administrator mysql session to use this plugin.
+            aad_identity: '- (Optional) Required when auth_plugin is aad_auth. This should be block containing type and identity. type can be one of user, group and service_principal. identity then should containt either UPN of user, name of group or Client ID of service principal.'
+            auth_plugin: '- (Optional) Use an authentication plugin to authenticate the user instead of using password authentication.  Description of the fields allowed in the block below. Conflicts with password and plaintext_password.'
+            auth_string_hashed: '- (Optional) Use an already hashed string as a parameter to auth_plugin. This can be used with passwords as well as with other auth strings.'
+            host: '- (Optional) The source host of the user. Defaults to "localhost".'
+            id: '- The id of the user created, composed as "username@host".'
+            mysql_no_login: |-
+                - Uses the MySQL No-Login Authentication Plugin. The
+                No-Login Authentication Plugin must be active in MySQL. For more information,
+                see here.
+            password: '- (Optional) Deprecated alias of plaintext_password, whose value is stored as plaintext in state. Prefer to use plaintext_password instead, which stores the password as an unsalted hash. Conflicts with auth_plugin.'
+            plaintext_password: '- (Optional) The password for the user. This must be provided in plain text, so the data source for it must be secured. An unsalted hash of the provided password is stored in state. Conflicts with auth_plugin.'
+            retain_old_password: '- (Optional) When true, the old password is retained when changing the password. Defaults to false. This use MySQL Dual Password Support feature and requires MySQL version 8.0.14 or newer. See MySQL Dual Password documentation for more.'
+            tls_option: '- (Optional) An TLS-Option for the CREATE USER or ALTER USER statement. The value is suffixed to REQUIRE. A value of ''SSL'' will generate a CREATE USER ... REQUIRE SSL statement. See the MYSQL  for more. Ignored if MySQL version is under 5.7.0.'
+            user: '- (Required) The name of the user.'
+        importStatements: []
+    mysql_user_password:
+        subCategory: ""
+        description: Creates and manages the password for a user on a MySQL server.
+        name: mysql_user_password
+        title: mysql_user_password
+        examples:
+            - name: jdoe
+              manifest: |-
+                {
+                  "user": "${mysql_user.jdoe.user}"
+                }
+              references:
+                user: mysql_user.jdoe.user
+              dependencies:
+                mysql_user.jdoe: |-
+                    {
+                      "user": "jdoe"
+                    }
+        argumentDocs:
+            encrypted_password: '- The encrypted password, base64 encoded.'
+            host: '- (Optional) The source host of the user. Defaults to localhost.'
+            key_fingerprint: '- The fingerprint of the PGP key used to encrypt the password'
+            user: '- (Required) The IAM user to associate with this access key.'
         importStatements: []

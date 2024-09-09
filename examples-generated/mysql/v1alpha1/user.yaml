@@ -1,0 +1,15 @@
+apiVersion: mysql.crossplane.io/v1alpha1
+kind: User
+metadata:
+  annotations:
+    meta.upbound.io/example-id: mysql/v1alpha1/user
+  labels:
+    testing.upbound.io/example-name: jdoe
+  name: jdoe
+spec:
+  forProvider:
+    host: example.com
+    plaintextPasswordSecretRef:
+      key: example-key
+      name: example-secret
+      namespace: upbound-system

@@ -1,4 +1,9 @@
 apiVersion: meta.pkg.crossplane.io/v1
 kind: Provider
 metadata:
-  name: upjet-provider-template
+  annotations:
+    meta.crossplane.io/maintainer: Jellysmack
+    meta.crossplane.io/source: github.com/jellysmack-tech/provider-mysql
+    meta.crossplane.io/license: Apache-2.0
+    meta.crossplane.io/description: A Crossplane provider for MySQL
+  name: provider-mysql
