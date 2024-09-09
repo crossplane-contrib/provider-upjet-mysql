@@ -1,0 +1,11 @@
+apiVersion: global.jellysmack.io/v1alpha1
+kind: Variable
+metadata:
+  annotations:
+    meta.upbound.io/example-id: global/v1alpha1/variable
+  labels:
+    testing.upbound.io/example-name: max_connections
+  name: max-connections
+spec:
+  forProvider:
+    value: "100"

@@ -10,12 +10,17 @@ import (
 
 	ujconfig "github.com/crossplane/upjet/pkg/config"
 
-	"github.com/upbound/upjet-provider-template/config/null"
+	"github.com/jellysmack-tech/provider-mysql/config/database"
+	default_roles "github.com/jellysmack-tech/provider-mysql/config/default-roles"
+	global_variable "github.com/jellysmack-tech/provider-mysql/config/global-variable"
+	"github.com/jellysmack-tech/provider-mysql/config/grant"
+	"github.com/jellysmack-tech/provider-mysql/config/role"
+	"github.com/jellysmack-tech/provider-mysql/config/user"
 )
 
 const (
-	resourcePrefix = "template"
-	modulePath     = "github.com/upbound/upjet-provider-template"
+	resourcePrefix = "mysql"
+	modulePath     = "github.com/jellysmack-tech/provider-mysql"
 )
 
 //go:embed schema.json
@@ -27,7 +32,7 @@ var providerMetadata string
 // GetProvider returns provider configuration
 func GetProvider() *ujconfig.Provider {
 	pc := ujconfig.NewProvider([]byte(providerSchema), resourcePrefix, modulePath, []byte(providerMetadata),
-		ujconfig.WithRootGroup("template.upbound.io"),
+		ujconfig.WithRootGroup("jellysmack.io"),
 		ujconfig.WithIncludeList(ExternalNameConfigured()),
 		ujconfig.WithFeaturesPackage("internal/features"),
 		ujconfig.WithDefaultResourceOptions(
@@ -36,7 +41,12 @@ func GetProvider() *ujconfig.Provider {
 
 	for _, configure := range []func(provider *ujconfig.Provider){
 		// add custom config functions
-		null.Configure,
+		database.Configure,
+		default_roles.Configure,
+		global_variable.Configure,
+		grant.Configure,
+		role.Configure,
+		user.Configure,
 	} {
 		configure(pc)
 	}

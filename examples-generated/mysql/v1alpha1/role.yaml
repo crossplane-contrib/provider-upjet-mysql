@@ -1,0 +1,10 @@
+apiVersion: mysql.jellysmack.io/v1alpha1
+kind: Role
+metadata:
+  annotations:
+    meta.upbound.io/example-id: mysql/v1alpha1/role
+  labels:
+    testing.upbound.io/example-name: developer
+  name: developer
+spec:
+  forProvider: {}

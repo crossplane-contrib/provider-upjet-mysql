@@ -13,7 +13,7 @@ import (
 
 // Package type metadata.
 const (
-	Group   = "template.upbound.io"
+	Group   = "mysql.jellysmack.io"
 	Version = "v1beta1"
 )
 
