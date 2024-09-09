@@ -1,0 +1,34 @@
+apiVersion: mysql.jellysmack.io/v1alpha1
+kind: Grant
+metadata:
+  annotations:
+    meta.upbound.io/example-id: mysql/v1alpha1/grant
+  labels:
+    testing.upbound.io/example-name: jdoe
+  name: jdoe
+spec:
+  forProvider:
+    database: app
+    host: example.com
+    privileges:
+    - SELECT
+    - UPDATE
+    user: ${mysql_user.jdoe.user}
+
+---
+
+apiVersion: mysql.jellysmack.io/v1alpha1
+kind: User
+metadata:
+  annotations:
+    meta.upbound.io/example-id: mysql/v1alpha1/grant
+  labels:
+    testing.upbound.io/example-name: jdoe
+  name: jdoe
+spec:
+  forProvider:
+    host: example.com
+    plaintextPasswordSecretRef:
+      key: example-key
+      name: example-secret
+      namespace: upbound-system

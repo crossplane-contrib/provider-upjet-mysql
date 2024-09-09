@@ -4,18 +4,18 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.14.0
-  name: resources.null.template.upbound.io
+  name: databases.mysql.jellysmack.io
 spec:
-  group: null.template.upbound.io
+  group: mysql.jellysmack.io
   names:
     categories:
     - crossplane
     - managed
-    - template
-    kind: Resource
-    listKind: ResourceList
-    plural: resources
-    singular: resource
+    - mysql
+    kind: Database
+    listKind: DatabaseList
+    plural: databases
+    singular: database
   scope: Cluster
   versions:
   - additionalPrinterColumns:
@@ -34,10 +34,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: Resource is the Schema for the Resources API. The null_resource
-          resource implements the standard resource lifecycle but takes no further
-          action.hashicorp. The triggers argument allows specifying an arbitrary set
-          of values that, when changed, will cause the resource to be replaced.
+        description: Database is the Schema for the Databases API. Creates and manages
+          a database on a MySQL server.
         properties:
           apiVersion:
             description: |-
@@ -57,7 +55,7 @@ spec:
           metadata:
             type: object
           spec:
-            description: ResourceSpec defines the desired state of Resource
+            description: DatabaseSpec defines the desired state of Database
             properties:
               deletionPolicy:
                 default: Delete
@@ -75,14 +73,19 @@ spec:
                 type: string
               forProvider:
                 properties:
-                  triggers:
-                    additionalProperties:
-                      type: string
+                  defaultCharacterSet:
                     description: |-
-                      running any associated provisioners.
-                      A map of arbitrary strings that, when changed, will force the null resource to be replaced, re-running any associated provisioners.
-                    type: object
-                    x-kubernetes-map-type: granular
+                      The default character set to use when
+                      a table is created without specifying an explicit character set. Defaults
+                      to utf8mb4.
+                    type: string
+                  defaultCollation:
+                    description: |-
+                      The default collation to use when a table
+                      is created without specifying an explicit collation. Defaults to
+                      utf8mb4_general_ci. Each character set has its own set of collations, so
+                      changing the character set requires also changing the collation.
+                    type: string
                 type: object
               initProvider:
                 description: |-
@@ -97,14 +100,19 @@ spec:
                   for example because of an external controller is managing them, like an
                   autoscaler.
                 properties:
-                  triggers:
-                    additionalProperties:
-                      type: string
+                  defaultCharacterSet:
                     description: |-
-                      running any associated provisioners.
-                      A map of arbitrary strings that, when changed, will force the null resource to be replaced, re-running any associated provisioners.
-                    type: object
-                    x-kubernetes-map-type: granular
+                      The default character set to use when
+                      a table is created without specifying an explicit character set. Defaults
+                      to utf8mb4.
+                    type: string
+                  defaultCollation:
+                    description: |-
+                      The default collation to use when a table
+                      is created without specifying an explicit collation. Defaults to
+                      utf8mb4_general_ci. Each character set has its own set of collations, so
+                      changing the character set requires also changing the collation.
+                    type: string
                 type: object
               managementPolicies:
                 default:
@@ -274,22 +282,26 @@ spec:
             - forProvider
             type: object
           status:
-            description: ResourceStatus defines the observed state of Resource.
+            description: DatabaseStatus defines the observed state of Database.
             properties:
               atProvider:
                 properties:
-                  id:
-                    description: (String) This is set to a random value at create
-                      time.
-                    type: string
-                  triggers:
-                    additionalProperties:
-                      type: string
+                  defaultCharacterSet:
                     description: |-
-                      running any associated provisioners.
-                      A map of arbitrary strings that, when changed, will force the null resource to be replaced, re-running any associated provisioners.
-                    type: object
-                    x-kubernetes-map-type: granular
+                      The default character set to use when
+                      a table is created without specifying an explicit character set. Defaults
+                      to utf8mb4.
+                    type: string
+                  defaultCollation:
+                    description: |-
+                      The default collation to use when a table
+                      is created without specifying an explicit collation. Defaults to
+                      utf8mb4_general_ci. Each character set has its own set of collations, so
+                      changing the character set requires also changing the collation.
+                    type: string
+                  id:
+                    description: The id of the database.
+                    type: string
                 type: object
               conditions:
                 description: Conditions of the resource.

@@ -7,4 +7,10 @@
 package v1alpha1
 
 // Hub marks this type as a conversion hub.
-func (tr *Resource) Hub() {}
+func (tr *Database) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *Grant) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *User) Hub() {}

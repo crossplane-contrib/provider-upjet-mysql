@@ -1,4 +1,4 @@
-module github.com/upbound/upjet-provider-template
+module github.com/jellysmack-tech/provider-mysql
 
 go 1.21
 
