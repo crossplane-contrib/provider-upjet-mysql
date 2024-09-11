@@ -1,0 +1,10 @@
+apiVersion: mysql.crossplane.io/v1alpha1
+kind: Database
+metadata:
+  annotations:
+    meta.upbound.io/example-id: mysql/v1alpha1/database
+  labels:
+    testing.upbound.io/example-name: app
+  name: app
+spec:
+  forProvider: {}

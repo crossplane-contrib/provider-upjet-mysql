@@ -1,0 +1,38 @@
+apiVersion: mysql.crossplane.io/v1alpha1
+kind: Grant
+metadata:
+  annotations:
+    meta.upbound.io/example-id: mysql/v1alpha1/grant
+  labels:
+    testing.upbound.io/example-name: jdoe
+  name: jdoe
+spec:
+  forProvider:
+    databaseSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    host: example.com
+    privileges:
+    - SELECT
+    - UPDATE
+    userSelector:
+      matchLabels:
+        testing.upbound.io/example-name: jdoe
+
+---
+
+apiVersion: mysql.crossplane.io/v1alpha1
+kind: User
+metadata:
+  annotations:
+    meta.upbound.io/example-id: mysql/v1alpha1/grant
+  labels:
+    testing.upbound.io/example-name: jdoe
+  name: jdoe
+spec:
+  forProvider:
+    host: example.com
+    plaintextPasswordSecretRef:
+      key: example-key
+      name: example-secret
+      namespace: upbound-system
