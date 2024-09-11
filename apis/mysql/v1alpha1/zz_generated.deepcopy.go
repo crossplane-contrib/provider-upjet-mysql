@@ -798,11 +798,6 @@ func (in *UserInitParameters) DeepCopyInto(out *UserInitParameters) {
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
 	}
-	if in.AuthPlugin != nil {
-		in, out := &in.AuthPlugin, &out.AuthPlugin
-		*out = new(string)
-		**out = **in
-	}
 	if in.AuthStringHashedSecretRef != nil {
 		in, out := &in.AuthStringHashedSecretRef, &out.AuthStringHashedSecretRef
 		*out = new(v1.SecretKeySelector)
@@ -928,11 +923,6 @@ func (in *UserParameters) DeepCopyInto(out *UserParameters) {
 		for i := range *in {
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
-	}
-	if in.AuthPlugin != nil {
-		in, out := &in.AuthPlugin, &out.AuthPlugin
-		*out = new(string)
-		**out = **in
 	}
 	if in.AuthStringHashedSecretRef != nil {
 		in, out := &in.AuthStringHashedSecretRef, &out.AuthStringHashedSecretRef
