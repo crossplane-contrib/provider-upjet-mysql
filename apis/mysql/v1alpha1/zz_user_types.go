@@ -39,6 +39,9 @@ type UserInitParameters struct {
 	// Required when auth_plugin is aad_auth. This should be block containing type and identity. type can be one of user, group and service_principal. identity then should containt either UPN of user, name of group or Client ID of service principal.
 	AadIdentity []AadIdentityInitParameters `json:"aadIdentity,omitempty" tf:"aad_identity,omitempty"`
 
+	// Use an authentication plugin to authenticate the user instead of using password authentication.  Description of the fields allowed in the block below. Conflicts with password and plaintext_password.
+	AuthPlugin *string `json:"authPlugin,omitempty" tf:"auth_plugin,omitempty"`
+
 	// Use an already hashed string as a parameter to auth_plugin. This can be used with passwords as well as with other auth strings.
 	AuthStringHashedSecretRef *v1.SecretKeySelector `json:"authStringHashedSecretRef,omitempty" tf:"-"`
 
@@ -81,6 +84,10 @@ type UserParameters struct {
 	// Required when auth_plugin is aad_auth. This should be block containing type and identity. type can be one of user, group and service_principal. identity then should containt either UPN of user, name of group or Client ID of service principal.
 	// +kubebuilder:validation:Optional
 	AadIdentity []AadIdentityParameters `json:"aadIdentity,omitempty" tf:"aad_identity,omitempty"`
+
+	// Use an authentication plugin to authenticate the user instead of using password authentication.  Description of the fields allowed in the block below. Conflicts with password and plaintext_password.
+	// +kubebuilder:validation:Optional
+	AuthPlugin *string `json:"authPlugin,omitempty" tf:"auth_plugin,omitempty"`
 
 	// Use an already hashed string as a parameter to auth_plugin. This can be used with passwords as well as with other auth strings.
 	// +kubebuilder:validation:Optional

@@ -86,6 +86,12 @@ spec:
                           type: string
                       type: object
                     type: array
+                  authPlugin:
+                    description: Use an authentication plugin to authenticate the
+                      user instead of using password authentication.  Description
+                      of the fields allowed in the block below. Conflicts with password
+                      and plaintext_password.
+                    type: string
                   authStringHashedSecretRef:
                     description: Use an already hashed string as a parameter to auth_plugin.
                       This can be used with passwords as well as with other auth strings.
@@ -186,6 +192,12 @@ spec:
                           type: string
                       type: object
                     type: array
+                  authPlugin:
+                    description: Use an authentication plugin to authenticate the
+                      user instead of using password authentication.  Description
+                      of the fields allowed in the block below. Conflicts with password
+                      and plaintext_password.
+                    type: string
                   authStringHashedSecretRef:
                     description: Use an already hashed string as a parameter to auth_plugin.
                       This can be used with passwords as well as with other auth strings.
