@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://github.com/jellysmack-tech/provider-mysql/compare/v0.2.0...v0.3.0) (2024-09-13)
+
+
+### Features
+
+* upgrade to terraform-mysql 3.0.65 ([c11e5dd](https://github.com/jellysmack-tech/provider-mysql/commit/c11e5dd6bb2b4b8d97c9bbd31340552df3719f35))
+
 ## [0.2.0](https://github.com/jellysmack-tech/provider-mysql/compare/v0.1.0...v0.2.0) (2024-09-12)
 
 
