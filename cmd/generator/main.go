@@ -11,7 +11,7 @@ import (
 
 	"github.com/crossplane/upjet/pkg/pipeline"
 
-	"github.com/jellysmack-tech/provider-mysql/config"
+	"github.com/crossplane-contrib/provider-upjet-mysql/config"
 )
 
 func main() {

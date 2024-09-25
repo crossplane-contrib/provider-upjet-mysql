@@ -21,8 +21,8 @@ import (
 	"github.com/pkg/errors"
 	ctrl "sigs.k8s.io/controller-runtime"
 
-	v1alpha1 "github.com/jellysmack-tech/provider-mysql/apis/mysql/v1alpha1"
-	features "github.com/jellysmack-tech/provider-mysql/internal/features"
+	v1alpha1 "github.com/crossplane-contrib/provider-upjet-mysql/apis/mysql/v1alpha1"
+	features "github.com/crossplane-contrib/provider-upjet-mysql/internal/features"
 )
 
 // Setup adds a controller that reconciles Grant managed resources.

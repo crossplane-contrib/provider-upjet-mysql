@@ -10,9 +10,9 @@ package apis
 import (
 	"k8s.io/apimachinery/pkg/runtime"
 
-	v1alpha1 "github.com/jellysmack-tech/provider-mysql/apis/mysql/v1alpha1"
-	v1alpha1apis "github.com/jellysmack-tech/provider-mysql/apis/v1alpha1"
-	v1beta1 "github.com/jellysmack-tech/provider-mysql/apis/v1beta1"
+	v1alpha1 "github.com/crossplane-contrib/provider-upjet-mysql/apis/mysql/v1alpha1"
+	v1alpha1apis "github.com/crossplane-contrib/provider-upjet-mysql/apis/v1alpha1"
+	v1beta1 "github.com/crossplane-contrib/provider-upjet-mysql/apis/v1beta1"
 )
 
 func init() {

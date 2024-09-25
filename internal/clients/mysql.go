@@ -15,7 +15,7 @@ import (
 
 	"github.com/crossplane/upjet/pkg/terraform"
 
-	"github.com/jellysmack-tech/provider-mysql/apis/v1beta1"
+	"github.com/crossplane-contrib/provider-upjet-mysql/apis/v1beta1"
 )
 
 const (
