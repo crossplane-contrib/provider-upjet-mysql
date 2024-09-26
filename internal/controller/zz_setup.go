@@ -9,11 +9,11 @@ import (
 
 	"github.com/crossplane/upjet/pkg/controller"
 
-	database "github.com/jellysmack-tech/provider-mysql/internal/controller/mysql/database"
-	grant "github.com/jellysmack-tech/provider-mysql/internal/controller/mysql/grant"
-	role "github.com/jellysmack-tech/provider-mysql/internal/controller/mysql/role"
-	user "github.com/jellysmack-tech/provider-mysql/internal/controller/mysql/user"
-	providerconfig "github.com/jellysmack-tech/provider-mysql/internal/controller/providerconfig"
+	database "github.com/crossplane-contrib/provider-upjet-mysql/internal/controller/mysql/database"
+	grant "github.com/crossplane-contrib/provider-upjet-mysql/internal/controller/mysql/grant"
+	role "github.com/crossplane-contrib/provider-upjet-mysql/internal/controller/mysql/role"
+	user "github.com/crossplane-contrib/provider-upjet-mysql/internal/controller/mysql/user"
+	providerconfig "github.com/crossplane-contrib/provider-upjet-mysql/internal/controller/providerconfig"
 )
 
 // Setup creates all controllers with the supplied logger and adds them to

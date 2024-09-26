@@ -10,15 +10,15 @@ import (
 
 	ujconfig "github.com/crossplane/upjet/pkg/config"
 
-	"github.com/jellysmack-tech/provider-mysql/config/database"
-	"github.com/jellysmack-tech/provider-mysql/config/grant"
-	"github.com/jellysmack-tech/provider-mysql/config/role"
-	"github.com/jellysmack-tech/provider-mysql/config/user"
+	"github.com/crossplane-contrib/provider-upjet-mysql/config/database"
+	"github.com/crossplane-contrib/provider-upjet-mysql/config/grant"
+	"github.com/crossplane-contrib/provider-upjet-mysql/config/role"
+	"github.com/crossplane-contrib/provider-upjet-mysql/config/user"
 )
 
 const (
 	resourcePrefix = "mysql"
-	modulePath     = "github.com/jellysmack-tech/provider-mysql"
+	modulePath     = "github.com/crossplane-contrib/provider-upjet-mysql"
 )
 
 //go:embed schema.json

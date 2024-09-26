@@ -1,6 +1,6 @@
 apiVersion: pkg.crossplane.io/v1
 kind: Provider
 metadata:
-  name: provider-mysql
+  name: provider-upjet-mysql
 spec:
-  package: jellysmack-tech/provider-mysql:v0.1.0
+  package: crossplane-contrib/provider-upjet-mysql:v0.1.0

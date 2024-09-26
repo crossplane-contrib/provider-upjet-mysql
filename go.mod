@@ -1,4 +1,4 @@
-module github.com/jellysmack-tech/provider-mysql
+module github.com/crossplane-contrib/provider-upjet-mysql
 
 go 1.21
 

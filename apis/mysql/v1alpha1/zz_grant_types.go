@@ -16,7 +16,7 @@ import (
 type GrantInitParameters struct {
 
 	// The database to grant privileges on.
-	// +crossplane:generate:reference:type=github.com/jellysmack-tech/provider-mysql/apis/mysql/v1alpha1.Database
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-mysql/apis/mysql/v1alpha1.Database
 	Database *string `json:"database,omitempty" tf:"database,omitempty"`
 
 	// Reference to a Database in mysql to populate database.
@@ -51,7 +51,7 @@ type GrantInitParameters struct {
 	Table *string `json:"table,omitempty" tf:"table,omitempty"`
 
 	// The name of the user. Conflicts with role.
-	// +crossplane:generate:reference:type=github.com/jellysmack-tech/provider-mysql/apis/mysql/v1alpha1.User
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-mysql/apis/mysql/v1alpha1.User
 	User *string `json:"user,omitempty" tf:"user,omitempty"`
 
 	// Reference to a User in mysql to populate user.
@@ -100,7 +100,7 @@ type GrantObservation struct {
 type GrantParameters struct {
 
 	// The database to grant privileges on.
-	// +crossplane:generate:reference:type=github.com/jellysmack-tech/provider-mysql/apis/mysql/v1alpha1.Database
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-mysql/apis/mysql/v1alpha1.Database
 	// +kubebuilder:validation:Optional
 	Database *string `json:"database,omitempty" tf:"database,omitempty"`
 
@@ -143,7 +143,7 @@ type GrantParameters struct {
 	Table *string `json:"table,omitempty" tf:"table,omitempty"`
 
 	// The name of the user. Conflicts with role.
-	// +crossplane:generate:reference:type=github.com/jellysmack-tech/provider-mysql/apis/mysql/v1alpha1.User
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-mysql/apis/mysql/v1alpha1.User
 	// +kubebuilder:validation:Optional
 	User *string `json:"user,omitempty" tf:"user,omitempty"`
 

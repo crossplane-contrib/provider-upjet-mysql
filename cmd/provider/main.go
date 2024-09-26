@@ -29,12 +29,12 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 	"sigs.k8s.io/controller-runtime/pkg/metrics"
 
-	"github.com/jellysmack-tech/provider-mysql/apis"
-	"github.com/jellysmack-tech/provider-mysql/apis/v1alpha1"
-	"github.com/jellysmack-tech/provider-mysql/config"
-	"github.com/jellysmack-tech/provider-mysql/internal/clients"
-	"github.com/jellysmack-tech/provider-mysql/internal/controller"
-	"github.com/jellysmack-tech/provider-mysql/internal/features"
+	"github.com/crossplane-contrib/provider-upjet-mysql/apis"
+	"github.com/crossplane-contrib/provider-upjet-mysql/apis/v1alpha1"
+	"github.com/crossplane-contrib/provider-upjet-mysql/config"
+	"github.com/crossplane-contrib/provider-upjet-mysql/internal/clients"
+	"github.com/crossplane-contrib/provider-upjet-mysql/internal/controller"
+	"github.com/crossplane-contrib/provider-upjet-mysql/internal/features"
 )
 
 func main() {
@@ -59,7 +59,7 @@ func main() {
 	kingpin.MustParse(app.Parse(os.Args[1:]))
 
 	zl := zap.New(zap.UseDevMode(*debug))
-	log := logging.NewLogrLogger(zl.WithName("provider-mysql"))
+	log := logging.NewLogrLogger(zl.WithName("provider-upjet-mysql"))
 	if *debug {
 		// The controller-runtime runs with a no-op logger by default. It is
 		// *very* verbose even at info level, so we only provide it a real
@@ -74,7 +74,7 @@ func main() {
 
 	mgr, err := ctrl.NewManager(cfg, ctrl.Options{
 		LeaderElection:   *leaderElection,
-		LeaderElectionID: "crossplane-leader-election-provider-mysql",
+		LeaderElectionID: "crossplane-leader-election-provider-upjet-mysql",
 		Cache: cache.Options{
 			SyncPeriod: syncPeriod,
 		},
