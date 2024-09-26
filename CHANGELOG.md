@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.0.0](https://github.com/crossplane-contrib/provider-upjet-mysql/compare/v0.3.0...v1.0.0) (2024-09-26)
+
+
+### ⚠ BREAKING CHANGES
+
+* migrate project/module to crossplane-contrib/provider-upjet-mysql
+
+### Code Refactoring
+
+* migrate project/module to crossplane-contrib/provider-upjet-mysql ([3f58abd](https://github.com/crossplane-contrib/provider-upjet-mysql/commit/3f58abd2895eb71588eb24dad4d3cceb21db7121))
+
 ## [0.3.0](https://github.com/crossplane-contrib/provider-upjet-mysql/compare/v0.2.0...v0.3.0) (2024-09-13)
 
 
